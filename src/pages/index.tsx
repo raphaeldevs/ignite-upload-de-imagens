@@ -2,13 +2,13 @@ import { Button, Box } from '@chakra-ui/react';
 import { useMemo } from 'react';
 import { useInfiniteQuery } from 'react-query';
 
+import { api } from '../services/api';
+import { ImagesQueryResponse } from './api/images';
+
 import { Header } from '../components/Header';
 import { CardList } from '../components/CardList';
-import { api } from '../services/api';
 import { Loading } from '../components/Loading';
 import { Error } from '../components/Error';
-
-import { ImagesQueryResponse } from './api/images';
 
 export default function Home(): JSX.Element {
   const {
@@ -41,8 +41,10 @@ export default function Home(): JSX.Element {
   }, [data]);
 
   // TODO RENDER LOADING SCREEN
+  if (isLoading) return <Loading />;
 
   // TODO RENDER ERROR SCREEN
+  if (isError) return <Error />;
 
   return (
     <>
