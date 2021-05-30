@@ -21,12 +21,15 @@ export default function Home(): JSX.Element {
   } = useInfiniteQuery(
     'images',
     // TODO AXIOS REQUEST WITH PARAM
-    ({ pageParam = null }) =>
-      api.get('/api/images', {
+    async ({ pageParam = null }) => {
+      const response = await api.get('/api/images', {
         params: {
           after: pageParam,
         },
-      }),
+      });
+
+      return response.data;
+    },
     // TODO GET AND RETURN NEXT PAGE PARAM
     {
       getNextPageParam: (lastpage: ImagesQueryResponse) =>
@@ -36,8 +39,7 @@ export default function Home(): JSX.Element {
 
   const formattedData = useMemo(() => {
     // TODO FORMAT AND FLAT DATA ARRAY
-    console.log(data);
-    return [];
+    return data?.pages?.flatMap(page => page.data);
   }, [data]);
 
   // TODO RENDER LOADING SCREEN
