@@ -27,9 +27,7 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
           return sizeInMB < 10 || 'O arquivo deve ser menor que 10MB';
         },
         acceptedFormats: ({ '0': image }) => {
-          const [match] = image.type.match(
-            /image\/jpeg||image\/png||image\/gif/
-          );
+          const [match] = image.type.match(/image\/png|jpeg|gif/);
 
           return (
             Boolean(match) || 'Somente são aceitos arquivos PNG, JPEG e GIF'
@@ -62,7 +60,8 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
   const queryClient = useQueryClient();
   const mutation = useMutation(
     // TODO MUTATION API POST REQUEST
-    async (data: Record<string, unknown>) => api.post('/api/images', data),
+    async (data: Record<string, unknown>) =>
+      api.post('/api/images', { ...data, url: imageUrl }),
     {
       // TODO ONSUCCESS MUTATION
       onSuccess: () => queryClient.invalidateQueries('images'),
